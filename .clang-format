@@ -1,0 +1,49 @@
+---
+BasedOnStyle: Google
+IndentWidth: 4
+TabWidth: 4
+ColumnLimit: 160
+AlignConsecutiveAssignments: true
+AlwaysBreakTemplateDeclarations: true
+AllowShortFunctionsOnASingleLine: Inline
+BreakAfterJavaFieldAnnotations: true
+BreakBeforeBraces: Linux
+SpaceAfterCStyleCast: true
+IndentCaseLabels: true
+AccessModifierOffset: -4
+BraceWrapping:
+  AfterNamespace: false
+  AfterClass: false
+  AfterFunction: true
+  SplitEmptyNamespace: false
+
+BreakConstructorInitializersBeforeComma: true
+ConstructorInitializerAllOnOneLineOrOnePerLine: true
+BinPackParameters: false
+ReflowComments: false
+SortIncludes: false
+Language: Cpp
+---
+BasedOnStyle: Google
+IndentWidth: 4
+TabWidth: 4
+ColumnLimit: 160
+AlignConsecutiveAssignments: true
+AlwaysBreakTemplateDeclarations: true
+AllowShortFunctionsOnASingleLine: Inline
+BreakAfterJavaFieldAnnotations: true
+BreakBeforeBraces: Linux
+SpaceAfterCStyleCast: true
+IndentCaseLabels: true
+AccessModifierOffset: -4
+BraceWrapping:
+  AfterNamespace: false
+  AfterClass: false
+  AfterFunction: true
+  SplitEmptyNamespace: false
+
+BreakConstructorInitializersBeforeComma: true
+ConstructorInitializerAllOnOneLineOrOnePerLine: true
+BinPackParameters: false
+ReflowComments: false
+Language: Proto
