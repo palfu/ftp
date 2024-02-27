@@ -22,3 +22,11 @@
 #define FLOG_INFO(format, ...)                      \
     printf(LOG_COLOR_GREEN_ format, ##__VA_ARGS__); \
     printf(LOG_COLOR_NONE_)
+
+#define FLOG_WARN(format, ...)                       \
+    printf(LOG_COLOR_YELLOW_ format, ##__VA_ARGS__); \
+    printf(LOG_COLOR_NONE_)
+
+#define FLOG_ERROR(format, ...)                   \
+    printf(LOG_COLOR_RED_ format, ##__VA_ARGS__); \
+    printf(LOG_COLOR_NONE_)
