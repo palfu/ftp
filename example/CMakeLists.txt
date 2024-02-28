@@ -1,0 +1,1 @@
+add_executable(test_template_virtual test_template_virtual.cpp)
