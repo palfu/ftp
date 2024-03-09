@@ -42,8 +42,8 @@ public:
     virtual void update(){};
 
 public:
-    STATE state_;
-    STATE_COVARIANCE covariance_;
+    STATE state_, state_prior_, state_post_;
+    STATE_COVARIANCE covariance_, covariance_prior_, covariance_post_;
     MEASUREMENT measure_;
     MEASUREMENT_NOISE measure_noise_;
     MEASUREMENT_FUNC measure_func_;

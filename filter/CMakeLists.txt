@@ -1,0 +1,1 @@
+add_executable(1_sum_three test/1_sum_three.cpp)
