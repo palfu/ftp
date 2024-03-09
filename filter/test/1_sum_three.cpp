@@ -8,6 +8,30 @@ using namespace std;
 class Solution
 {
 public:
+    bool findVal(std::vector<int> const& nums, int start_idx, int end_idx, int val)
+    {
+        if (start_idx > end_idx) {
+            return false;
+        }
+        int mid_idx = (start_idx + end_idx) / 2;
+        if (nums[start_idx] == val || nums[end_idx] == val || nums[mid_idx] == val) {
+            return true;
+        }
+        if (nums[start_idx] > val) {
+            return false;
+        }
+
+        if (nums[end_idx] < val) {
+            return false;
+        }
+
+        if (nums[mid_idx] < val) {
+            return findVal(nums, mid_idx + 1, end_idx - 1, val);
+        }
+
+        return findVal(nums, start_idx + 1, mid_idx - 1, val);
+    }
+
     vector<vector<int>> threeSum(vector<int>& nums)
     {
         int num_size = nums.size();
@@ -16,7 +40,6 @@ public:
             return res;
         }
         std::sort(nums.begin(), nums.end());
-        std::unordered_set<int> query_set(nums.begin(), nums.end());
         int prev_i = nums[0] - 1;
         for (int i = 0; i < num_size; i++) {
             if (nums[i] == prev_i) {
@@ -30,7 +53,7 @@ public:
                 }
                 prev_j  = nums[j];
                 int val = -nums[i] - nums[j];
-                if (query_set.find(val) != query_set.end()) {
+                if (findVal(nums, j + 1, num_size - 1, val)) {
                     std::vector<int> tmp = {nums[i], nums[j], val};
                     res.emplace_back(tmp);
                 }
