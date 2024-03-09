@@ -64,7 +64,8 @@ message("easy ${easy_profiler_LIB_DIRS}")
 
 set(BASIC_LIBRARIES  ${boost_LIBS}  ${jsoncpp_LIBS} ${glog_LIBS} ${gflags_LIBS})
 
-add_subdirectory(filter)
+# add_subdirectory(filter)
+add_subdirectory(example)
 
 configure_file(cmake/run_env.sh.in ${CMAKE_CURRENT_BINARY_DIR}/env.sh @ONLY)
 
