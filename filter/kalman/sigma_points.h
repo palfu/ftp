@@ -1,6 +1,6 @@
 #pragma once
 
-#include "common/eigen_helper.h"
+#include "common/common.h"
 
 namespace ftp
 {
@@ -41,6 +41,8 @@ public:
             }
         }
     }
+
+    DEFINE_SMART_PTR(SigmaPoints);
 
     inline size_t getSigmaSize() const { return 2 * state_size_ + 1; }
 
@@ -93,5 +95,7 @@ private:
     SQRT_FUNCTION sqrt_fun_    = nullptr;
     SUBTRACT_FUNCTION sub_fun_ = nullptr;
 };
+
+using SigmaPointsPtr = SigmaPoints::Ptr;
 
 }  // namespace ftp

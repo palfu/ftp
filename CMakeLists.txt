@@ -52,6 +52,7 @@ include_directories(
     ${boost_INCLUDE_DIRS}
     ${glog_INCLUDE_DIRS}
     ${gflags_INCLUDE_DIRS}
+    ${CMAKE_CURRENT_SOURCE_DIR}/filter
 )
 
 link_directories(

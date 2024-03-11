@@ -1,9 +1,6 @@
 #pragma once
 
-#include "json/json.h"
-#include <fstream>
-#include <string>
-
+#include "common.h"
 namespace ftp
 {
 
@@ -34,10 +31,10 @@ public:
     bool saveJson(std::string filename)
     {
         Json::Value root = toJson();
-        return saveJson(filename, root);
+        return writeJsonFile(filename, root);
     }
 
-    static bool saveJson(std::string filename, Json::Value const &value)
+    static bool writeJsonFile(std::string filename, Json::Value const &value)
     {
         Json::StreamWriterBuilder writerBuilder;  // 新式API
         std::ofstream os(filename, std::ios::out);
