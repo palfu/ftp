@@ -17,8 +17,8 @@ namespace ftp
 #define _USE_DOUBLE_
 #ifdef _USE_DOUBLE_
 using UNIT = double;
-using VD   = Eigen::VectorXd;
-using MD   = Eigen::MatrixXd;
+using VD   = Eigen::Vector<UNIT, Eigen::Dynamic, Eigen::Dynamic>;
+using MD   = Eigen::Matrix<UNIT, Eigen::Dynamic, Eigen::Dynamic>;
 #else
 using UNIT = float;
 using VD   = Eigen::VectorXf;

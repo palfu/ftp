@@ -1,3 +1,5 @@
+#pragma once
+
 #include "common/filter.h"
 #include "common/common_function.h"
 
@@ -19,28 +21,41 @@ public:
         setMatrixDiagonal(system_uncertainty_, meas_size_, meas_size_, 0.0);
     }
 
-    virtual void predict(double const& dt)
+    virtual ~KalmanFilter() {}
+
+    virtual void predict(double const& dt, bool state_ready = false)
     {
-        trans_matrix_             = updateTransitionMatrix(dt);
-        state_predict_            = trans_matrix_ * state_;
-        state_predict_covariance_ = fading_coeff_ * trans_matrix_ * state_covariance_ * trans_matrix_.transpose() + trans_uncertainty_;
+        trans_matrix_  = updateTransitionMatrix(dt);
+        state_predict_ = trans_matrix_ * state_;
+        if (state_ready) {
+            state_predict_covariance_ = state_covariance_;
+
+        } else {
+            state_predict_covariance_ = fading_coeff_ * trans_matrix_ * state_covariance_ * trans_matrix_.transpose() + trans_uncertainty_;
+        }
     }
 
     virtual inline MeasureVar residual(MeasureVar const& meas, StateVar const& state) const { return meas - meas_matrix_ * state; }
 
     virtual inline MeasureVar measure(StateVar const& state) const { return meas_matrix_ * state; }
 
-    virtual void update(bool use_diag_inverse = true)
-    {  // P = (I - KH) P(I - KH) ' + KRK'
+    virtual void update(bool use_diag_inverse = true, bool state_ready = false)
+    {
+        // TODO
+        // P = (I - KH) P(I - KH) ' + KRK'
         // This is more numerically stable
         // and works for non - optimal K vs the equation
         // P = (I - KH) P usually seen in the literature.
-        auto ph_t           = state_predict_covariance_ * meas_matrix_.transpose();
-        system_uncertainty_ = meas_matrix_ * ph_t + measure_uncertainty_;
-        if (use_diag_inverse) {
-            kalman_coeff_ = ph_t * inverseDiagonal(system_uncertainty_);
-        } else {
-            kalman_coeff_ = ph_t * system_uncertainty_.inverse();
+
+        if (!state_ready) {
+            auto ph_t           = state_predict_covariance_ * meas_matrix_.transpose();
+            system_uncertainty_ = meas_matrix_ * ph_t + measure_uncertainty_;
+
+            if (use_diag_inverse) {
+                kalman_coeff_ = ph_t * inverseDiagonal(system_uncertainty_);
+            } else {
+                kalman_coeff_ = ph_t * system_uncertainty_.inverse();
+            }
         }
 
         MeasureVar residual = meas_ - meas_matrix_ * state_predict_;
@@ -52,8 +67,7 @@ public:
     double fading_coeff_ = 1.0;
     StateCovariance trans_uncertainty_;
     KalmanCoeff kalman_coeff_;
-    TransitionMatrix trans_matrix_;
-    MeasureMatrix meas_matrix_;
+
     MeasureCovariance meas_identity_ = TransitionMatrix::Identity();
     MeasureCovariance meas_uncertainty_;
     MeasureCovariance system_uncertainty_;

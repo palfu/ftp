@@ -114,4 +114,16 @@ Eigen::Matrix<T, Eigen::Dynamic, Eigen::Dynamic> inverseDiagonal(Eigen::Matrix<T
     return inv;
 }
 
+double chi2Test(Eigen::VectorXd const& residual, Eigen::MatrixXd const& covariance, bool use_diagonal_inverse = true)
+{
+    Eigen::MatrixXd inv_cov;
+    if (use_diagonal_inverse) {
+        inv_cov = inverseDiagonal(covariance);
+    } else {
+        inv_cov = covariance.llt().solve(Eigen::MatrixXd::Identity(covariance.rows(), covariance.cols()));
+    }
+    double chi_value = residual.transpose() * inv_cov * residual;
+    return chi_value;
+}
+
 }  // namespace ftp
