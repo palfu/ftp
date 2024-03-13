@@ -105,6 +105,7 @@ public:
         meas_update_      = false;
     };
 
+    // 设置自车对应的状态
     virtual void setState(StateVar const& state, StateCovariance const& covariance, bool by_predict = false)
     {
         if (by_predict) {
@@ -116,6 +117,14 @@ public:
         }
     }
 
+    // 进行反向rts(Rauch–Tung–Striebel)平滑
+    virtual void rtsSmooth(std::vector<Eigen::VectorXd> const& vec_state,
+                           std::vector<Eigen::MatrixXd> const& vec_covariance,
+                           std::vector<double> const& vec_dt,
+                           std::vector<Eigen::VectorXd>& smoothed_state,
+                           std::vector<Eigen::MatrixXd>& smoothed_covariance)
+    {
+    }
     bool meas_update_ = false;
     StateVar state_;
     StateVar state_predict_;

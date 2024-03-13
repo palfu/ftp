@@ -5,14 +5,14 @@
 namespace ftp
 {
 
-using SQRT_FUNCCTION    = std::function<Eigen::VectorXd(Eigen::MatrixXd const&)>;
+using SQRT_FUNCTION     = std::function<Eigen::VectorXd(Eigen::MatrixXd const&)>;
 using SUBTRACT_FUNCTION = std::function<Eigen::VectorXd(Eigen::VectorXd const&, double const&, size_t const&)>;
 
 class SigmaPoints
 {
 public:
     SigmaPoints(
-        size_t state_size, double alpha = 0.1, double beta = 2.0, double kappa = -1.0, SQRT_FUNCCTION sqrt_func = nullptr, SUBTRACT_FUNCTION sub_func = nullptr)
+        size_t state_size, double alpha = 0.1, double beta = 2.0, double kappa = -1.0, SQRT_FUNCTION sqrt_func = nullptr, SUBTRACT_FUNCTION sub_func = nullptr)
         : state_size_(state_size), alpha_(alpha), beta_(beta), kappa_(kappa), sqrt_func_(sqrt_func), sub_func_(sub_func)
     {
         if (sub_func_ == nullptr) {
@@ -92,7 +92,7 @@ private:
     double alpha_               = 1.0;
     double beta_                = 2.0;
     double kappa_               = -1.0;
-    SQRT_FUNCCTION sqrt_func_   = nullptr;
+    SQRT_FUNCTION sqrt_func_    = nullptr;
     SUBTRACT_FUNCTION sub_func_ = nullptr;
 };
 

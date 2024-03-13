@@ -126,4 +126,29 @@ double chi2Test(Eigen::VectorXd const& residual, Eigen::MatrixXd const& covarian
     return chi_value;
 }
 
+// test input residual<<0.3, 0.5; covariance<<0.4, 0,2 0,2, 0.4
+// output 0.334736
+
+double logpdf(Eigen::VectorXd const& residual, Eigen::MatrixXd const& covariance)
+{
+    const double log2pi = log(2 * M_PI);
+    int rank            = residual.size();
+    double log_det      = log(covariance.determinant());
+
+    Eigen::JacobiSVD<Eigen::MatrixXd> svd(covariance, Eigen::ComputeThinU | Eigen::ComputeThinV);
+    Eigen::MatrixXd U = svd.matrixU();
+    // Eigen::MatrixXd V = svd.matrixV();
+    Eigen::VectorXd S          = svd.singularValues();
+    Eigen::VectorXd inv_sqrt_S = Eigen::VectorXd::Constant(S.size(), 0);
+    for (int i = 0; i < S.size(); i++) {
+        if (S(i) > 1e-6) {
+            inv_sqrt_S(i) = sqrt(1 / S(i));
+        }
+    }
+    Eigen::VectorXd proj_residual = (residual * U).cwiseProduct(inv_sqrt_S);
+    double noise                  = proj_residual.norm() * proj_residual.norm();
+
+    return -0.5 * (rank * log2pi + log_det + noise);
+}
+
 }  // namespace ftp

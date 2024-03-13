@@ -64,6 +64,40 @@ public:
         state_covariance_   = i_kh * state_predict_ * i_kh.transpose() + kalman_coeff_ * measure_uncertainty_ * kalman_coeff_;
     }
 
+    // 假设状态作为观测，状态转移方程等同于观测方式，状态转移方程为单位阵
+    virtual void rtsSmooth(std::vector<Eigen::VectorXd> const& vec_state,
+                           std::vector<Eigen::MatrixXd> const& vec_covariance,
+                           std::vector<double> const& vec_dt,
+                           std::vector<Eigen::VectorXd>& smoothed_state,
+                           std::vector<Eigen::MatrixXd>& smoothed_covariance)
+    {
+        int state_size      = vec_state.size();
+        int covariance_size = vec_covariance.size();
+        int dt_size         = vec_dt.size();
+        if (state_size < 2 || state_size != covariance_size || (dt_size != state_size && dt_size != state_size - 1)) {
+            FLOG_ERROR("state_size %s, cov %d, dt %d, size not match!", state_size, covariance_size, dt_size);
+            return;
+        }
+
+        int dt_idx = 1;
+        if (dt_size == state_size - 1) {
+            dt_idx = 0;
+        }
+
+        Eigen::VectorXd predict_mean_state;
+        Eigen::MatrixXd predict_mean_state_covariance;
+        Eigen::MatrixXd cross_state_covariance;
+        smoothed_state      = vec_state;
+        smoothed_covariance = vec_covariance;
+        for (int i = state_size - 2; i >= 0; i--) {
+            trans_matrix_          = updateTransitionMatrix(dt);
+            system_uncertainty_    = trans_matrix_ * vec_covariance[i] * trans_matrix_.transpose() + trans_uncertainty_;
+            kalman_coeff_          = vec_covariance[i].trans_matrix_.transpose() * system_uncertainty_.inverse();
+            smoothed_state[i]      = vec_state[i] + coeff * (vec_state[i + 1] - trans_matrix_ * vec_state[i]);
+            smoothed_covariance[i] = vec_covariance[i] + coeff * (vec_covariance[i + 1] - system_uncertainty_) * coeff.transpose();
+        }
+    }
+
     double fading_coeff_ = 1.0;
     StateCovariance trans_uncertainty_;
     KalmanCoeff kalman_coeff_;

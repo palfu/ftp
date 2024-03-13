@@ -120,11 +120,11 @@ public:
     }
 
     // 以后验估计作为观测，对前面的估计进行修正
-    void rtsSmooth(std::vector<Eigen::VectorXd> const& vec_state,
-                   std::vector<Eigen::MatrixXd> const& vec_covariance,
-                   std::vector<double> const& vec_dt,
-                   std::vector<Eigen::VectorXd>& smoothed_state,
-                   std::vector<Eigen::MatrixXd>& smoothed_covariance)
+    virtual void rtsSmooth(std::vector<Eigen::VectorXd> const& vec_state,
+                           std::vector<Eigen::MatrixXd> const& vec_covariance,
+                           std::vector<double> const& vec_dt,
+                           std::vector<Eigen::VectorXd>& smoothed_state,
+                           std::vector<Eigen::MatrixXd>& smoothed_covariance)
     {
         int state_size      = vec_state.size();
         int covariance_size = vec_covariance.size();
