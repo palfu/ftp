@@ -62,6 +62,7 @@ public:
         }
     }
 
+    // 转移，预测，混合
     virtual void predict(double const& dt, bool state_ready = false)
     {
         std::vector<StateVar> mix_state(filter_size_);
@@ -95,6 +96,7 @@ public:
         computeStateEstimate(true);
     }
 
+    //
     virtual void update(bool use_diag_inverse = true, bool state_ready = false)
     {
         Eigen::VectorXd filter_likelihood = Eigen::VectorXd::Constant(filter_size_, 0);
