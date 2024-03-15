@@ -145,7 +145,7 @@ double logpdf(Eigen::VectorXd const& residual, Eigen::MatrixXd const& covariance
             inv_sqrt_S(i) = sqrt(1 / S(i));
         }
     }
-    Eigen::VectorXd proj_residual = (residual * U).cwiseProduct(inv_sqrt_S);
+    Eigen::VectorXd proj_residual = (U * residual).cwiseProduct(inv_sqrt_S);
     double noise                  = proj_residual.norm() * proj_residual.norm();
 
     return -0.5 * (rank * log2pi + log_det + noise);
